@@ -202,7 +202,6 @@ class HashMap {
     if (contains_key (key))
       {
         return false;
-        return false;
       }
     (_array[hasher (key)])->push_back ({key, value});
     _size++;
@@ -217,7 +216,6 @@ class HashMap {
    * */
   bool contains_key (const KeyT &key) const
   {
-    auto a = _array.begin ();
     for (auto &item: *(_array.at (hasher (key))))
       {
         if (item.first == key)
@@ -365,20 +363,20 @@ class HashMap {
    * */
   friend bool operator== (const HashMap &lhs, const HashMap &rhs)
   {
-    if(lhs.size () != rhs.size ())
+    if (lhs.size () != rhs.size ())
       {
         return false;
       }
-    for (auto &item : lhs)
+    for (const auto &item: lhs)
       {
-        if(rhs.contains_key (item.first))
+        if (rhs.contains_key (item.first))
           {
-            if(rhs[item.first] != item.second)
+            if (rhs[item.first] != item.second)
               {
                 return false;
               }
           }
-          else
+        else
           {
             return false;
           }
@@ -448,11 +446,11 @@ class HashMap {
       _cell = iter._cell;
     }
 
-    Iterator (HashMap<KeyT, ValueT> *father)
+    Iterator (const HashMap<KeyT, ValueT> *father)
         : _father (*father), _place (_father._array)
     {
       _cell = 0;
-      while (_place.capacity () > _cell && _place[_cell]->empty ())
+      while (_place.capacity () > _cell && _place[(size_t)_cell]->empty ())
         {
           _cell++;
         }
@@ -465,16 +463,16 @@ class HashMap {
      * */
     pointer operator-> ()
     {
-      return &(_place[_cell]->at (_obj));
+      return &(_place[(size_t)_cell]->at ((size_t)_obj));
     }
 
     /**
      * allow access to the value of the Iterator
      * @return const value
      * */
-    const reference operator* () const
+    reference operator* () const
     {
-      return (_place[_cell]->at (_obj));
+      return (_place[(size_t)_cell]->at ((size_t)_obj));
     }
 
     Iterator &operator= (Iterator &iter)
@@ -492,10 +490,10 @@ class HashMap {
     Iterator &operator++ ()
     {
       _obj++;
-      if (_obj >= _place[_cell]->size ())
+      if (_obj >= _place[(size_t)_cell]->size ())
         {
           _cell++;
-          while (_place.capacity () > _cell && _place[_cell]->empty ())
+          while (_place.capacity () > _cell && _place[(size_t)_cell]->empty ())
             {
               _cell++;
             }
@@ -512,10 +510,10 @@ class HashMap {
     {
       auto temp = *this;
       _obj++;
-      if (_obj >= _place[_cell]->size ())
+      if (_obj >= _place[(size_t)_cell]->size ())
         {
           _cell++;
-          while (_place.capacity () > _cell && _place[_cell]->empty ())
+          while (_place.capacity () > _cell && _place[(size_t)_cell]->empty ())
             {
               _cell++;
             }
@@ -571,9 +569,9 @@ class HashMap {
     return itr;
   }
 
-  Iterator cend() const
+  Iterator cend () const
   {
-    return this->end();
+    return this->end ();
   }
 
 };
