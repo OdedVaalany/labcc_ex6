@@ -427,8 +427,8 @@ class HashMap {
    private:
     const HashMap<KeyT, ValueT> &_father;
     const std::vector<std::vector<std::pair<KeyT, ValueT>> *> &_place;
-    int _cell;
-    int _obj;
+    typename std::vector<std::vector<std::pair<KeyT, ValueT>> *>::size_type _cell;
+    typename std::vector<std::vector<std::pair<KeyT, ValueT>> *>::size_type _obj;
    public:
     typedef std::ptrdiff_t difference_type;
     typedef std::pair<KeyT, ValueT> value_type;
@@ -450,7 +450,7 @@ class HashMap {
         : _father (*father), _place (_father._array)
     {
       _cell = 0;
-      while (_place.capacity () > _cell && _place[(size_t)_cell]->empty ())
+      while (_place.capacity () > _cell && _place[_cell]->empty ())
         {
           _cell++;
         }
@@ -463,7 +463,7 @@ class HashMap {
      * */
     pointer operator-> ()
     {
-      return &(_place[(size_t)_cell]->at ((size_t)_obj));
+      return &(_place[_cell]->at (_obj));
     }
 
     /**
@@ -472,7 +472,7 @@ class HashMap {
      * */
     reference operator* () const
     {
-      return (_place[(size_t)_cell]->at ((size_t)_obj));
+      return (_place[_cell]->at (_obj));
     }
 
     Iterator &operator= (Iterator &iter)
@@ -490,10 +490,10 @@ class HashMap {
     Iterator &operator++ ()
     {
       _obj++;
-      if (_obj >= _place[(size_t)_cell]->size ())
+      if (_obj >= _place[_cell]->size ())
         {
           _cell++;
-          while (_place.capacity () > _cell && _place[(size_t)_cell]->empty ())
+          while (_place.capacity () > _cell && _place[_cell]->empty ())
             {
               _cell++;
             }
@@ -510,10 +510,10 @@ class HashMap {
     {
       auto temp = *this;
       _obj++;
-      if (_obj >= _place[(size_t)_cell]->size ())
+      if (_obj >= _place[_cell]->size ())
         {
           _cell++;
-          while (_place.capacity () > _cell && _place[(size_t)_cell]->empty ())
+          while (_place.capacity () > _cell && _place[_cell]->empty ())
             {
               _cell++;
             }
@@ -571,7 +571,14 @@ class HashMap {
 
   Iterator cend () const
   {
-    return this->end ();
+    int i = 0;
+    auto itr = Iterator (this);
+    while (i < _size)
+      {
+        itr++;
+        i++;
+      }
+    return itr;
   }
 
 };
