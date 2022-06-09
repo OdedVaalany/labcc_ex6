@@ -11,7 +11,8 @@ class Dictionary : public HashMap<std::string, std::string> {
  public:
   Dictionary () : HashMap<std::string, std::string> ()
   {}
-  Dictionary (const std::vector<std::string> &keys, const std::vector<std::string> &values)
+  Dictionary (const std::vector<std::string> &keys,
+              const std::vector<std::string> &values)
       : HashMap<std::string, std::string> (keys, values)
   {}
   Dictionary (const Dictionary &dict)
@@ -29,6 +30,7 @@ class Dictionary : public HashMap<std::string, std::string> {
       {
         throw invalid_key ("Key not found");
       }
+    return true;
   }
 
   /**

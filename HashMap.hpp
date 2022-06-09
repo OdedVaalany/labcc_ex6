@@ -37,7 +37,7 @@ class HashMap {
   {
     std::vector<KeyT> keys;
     std::vector<ValueT> values;
-    double loader_factor = get_loader_factor ();
+    double loader_factor = get_load_factor ();
     if (loader_factor > UPPER_LOADER_FACTOR)
       {
         for (auto &item: *this)
@@ -133,7 +133,7 @@ class HashMap {
       {
         throw std::runtime_error ("The given vector arn't the same size");
       }
-    _size=0;
+    _size = 0;
     _capacity = START_CAPACITY;
     allocate_array ();
     load_data (keys, values);
@@ -201,6 +201,7 @@ class HashMap {
   {
     if (contains_key (key))
       {
+        return false;
         return false;
       }
     (_array[hasher (key)])->push_back ({key, value});
@@ -283,7 +284,7 @@ class HashMap {
    * The function return the loader factor of the hash map
    * @return size/capacity as double type
    * */
-  double get_loader_factor () const
+  double get_load_factor () const
   {
     return ((double) _size) / ((double) capacity ());
   }
@@ -351,7 +352,8 @@ class HashMap {
     _array = std::vector<std::vector<std::pair<KeyT, ValueT>> *> (_capacity);
     for (int i = 0; i < _capacity; ++i)
       {
-        _array[i] = new std::vector<std::pair<KeyT, ValueT>> (to_copy._array[i][0]);
+        _array[i] = new std::vector<std::pair<KeyT, ValueT>>
+            (to_copy._array[i][0]);
       }
   }
 
@@ -391,7 +393,7 @@ class HashMap {
             return item.second;
           }
       }
-    return this->begin()->second;
+    return this->begin ()->second;
   }
   const ValueT &operator[] (const KeyT &key) const
   {
@@ -402,10 +404,10 @@ class HashMap {
             return item.second;
           }
       }
-    return this->begin()->second;
+    return this->begin ()->second;
   }
 
-  class const_iterator {
+  class Iterator {
    private:
     const HashMap<KeyT, ValueT> &_father;
     const std::vector<std::vector<std::pair<KeyT, ValueT>> *> &_place;
@@ -416,19 +418,19 @@ class HashMap {
     typedef std::pair<KeyT, ValueT> value_type;
     typedef std::pair<KeyT, ValueT> *pointer;
     typedef const std::pair<KeyT, ValueT> &reference;
-    typedef std::forward_iterator_tag const_iterator_category;
+    typedef std::forward_iterator_tag Iterator_category;
 
     /**
-     * constructor for the const const_iterator
+     * constructor for the const Iterator
      * */
-    const_iterator (const const_iterator &iter)
+    Iterator (const Iterator &iter)
         : _father (iter._father), _place (_father._array)
     {
       _obj = iter._obj;
       _cell = iter._cell;
     }
 
-    const_iterator (HashMap<KeyT, ValueT> *father)
+    Iterator (HashMap<KeyT, ValueT> *father)
         : _father (*father), _place (_father._array)
     {
       _cell = 0;
@@ -440,7 +442,7 @@ class HashMap {
     }
 
     /**
-     * allow access to the pointer of the const_iterator
+     * allow access to the pointer of the Iterator
      * @return const pointer of the value;
      * */
     pointer operator-> ()
@@ -449,7 +451,7 @@ class HashMap {
     }
 
     /**
-     * allow access to the value of the const_iterator
+     * allow access to the value of the Iterator
      * @return const value
      * */
     const reference operator* () const
@@ -457,7 +459,7 @@ class HashMap {
       return (_place[_cell]->at (_obj));
     }
 
-    const_iterator &operator= (const_iterator &iter)
+    Iterator &operator= (Iterator &iter)
     {
       _place = iter._place;
       _cell = iter._cell;
@@ -467,9 +469,9 @@ class HashMap {
 
     /**
      * Prefix increment
-     * @return const reference to the value of the const_iterator
+     * @return const reference to the value of the Iterator
      * */
-    const_iterator &operator++ ()
+    Iterator &operator++ ()
     {
       _obj++;
       if (_obj >= _place[_cell]->size ())
@@ -486,9 +488,9 @@ class HashMap {
 
     /**
      * Postfix increment
-     * @return const reference to the value of the const_iterator
+     * @return const reference to the value of the Iterator
      * */
-    const_iterator operator++ (int)
+    Iterator operator++ (int)
     {
       auto temp = *this;
       _obj++;
@@ -505,39 +507,39 @@ class HashMap {
     }
 
     /**
-     * allow to check if the const_iterator are the same
+     * allow to check if the Iterator are the same
      * @param lhs the left object
      * @param rhs the right object
      * @return true if it's the same \n false either
      * */
-    friend bool operator== (const const_iterator &lhs,
-                            const const_iterator &rhs)
+    friend bool operator== (const Iterator &lhs,
+                            const Iterator &rhs)
     {
       return lhs._cell == rhs._cell && lhs._obj == rhs._obj;
     }
 
     /**
-     * allow to check if the const_iterator aren't the same
+     * allow to check if the Iterator aren't the same
      * @param lhs the left object
      * @param rhs the right object
      * @return true if it isn't the same \n false either
      * */
-    friend bool operator!= (const const_iterator &lhs,
-                            const const_iterator &rhs)
+    friend bool operator!= (const Iterator &lhs,
+                            const Iterator &rhs)
     {
       return lhs._cell != rhs._cell || lhs._obj != rhs._obj;
     }
   };
 
-  const_iterator begin ()
+  Iterator begin ()
   {
-    return const_iterator (this);
+    return Iterator (this);
   }
 
-  const_iterator end ()
+  Iterator end ()
   {
     int i = 0;
-    auto itr = const_iterator (this);
+    auto itr = Iterator (this);
     while (i < _size)
       {
         itr++;
