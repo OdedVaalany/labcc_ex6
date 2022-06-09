@@ -9,8 +9,6 @@ class invalid_key : public std::invalid_argument {
 
 class Dictionary : public HashMap<std::string, std::string> {
  public:
-  Dictionary () : HashMap<std::string, std::string> ()
-  {}
   Dictionary (const std::vector<std::string> &keys,
               const std::vector<std::string> &values)
       : HashMap<std::string, std::string> (keys, values)

@@ -296,7 +296,7 @@ class HashMap {
    * @param key to search
    * @return number of the element in the same bucket (=cell)
    * */
-  int size_bucket (KeyT key) const
+  int bucket_size (KeyT key) const
   {
     if (contains_key (key))
       {
@@ -313,7 +313,7 @@ class HashMap {
    * @param key to search
    * @return index of the match bucket (=cell)
    * */
-  int index_bucket (KeyT key) const
+  int bucket_index (KeyT key) const
   {
     if (contains_key (key))
       {
@@ -365,6 +365,24 @@ class HashMap {
    * */
   friend bool operator== (const HashMap &lhs, const HashMap &rhs)
   {
+    if(lhs.size () != rhs.size ())
+      {
+        return false;
+      }
+    for (auto &item : lhs)
+      {
+        if(rhs.contains_key (item.first))
+          {
+            if(rhs[item.first] != item.second)
+              {
+                return false;
+              }
+          }
+          else
+          {
+            return false;
+          }
+      }
     return true;
   }
 
@@ -536,6 +554,11 @@ class HashMap {
     return Iterator (this);
   }
 
+  Iterator cbegin () const
+  {
+    return Iterator (this);
+  }
+
   Iterator end ()
   {
     int i = 0;
@@ -546,6 +569,11 @@ class HashMap {
         i++;
       }
     return itr;
+  }
+
+  Iterator cend() const
+  {
+    return this->end();
   }
 
 };
