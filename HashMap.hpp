@@ -543,11 +543,11 @@ class HashMap {
     friend bool operator!= (const Iterator &lhs,
                             const Iterator &rhs)
     {
-      return lhs._cell != rhs._cell || lhs._obj != rhs._obj;
+      return !(rhs == lhs);
     }
   };
 
-  Iterator begin ()
+  Iterator begin () const
   {
     return Iterator (this);
   }
@@ -557,7 +557,7 @@ class HashMap {
     return Iterator (this);
   }
 
-  Iterator end ()
+  Iterator end () const
   {
     int i = 0;
     auto itr = Iterator (this);
