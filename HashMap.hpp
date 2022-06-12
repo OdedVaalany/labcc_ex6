@@ -103,6 +103,10 @@ class HashMap {
             (_array[hasher (keys[i])])->push_back ({keys[i], values[i]});
             _size++;
           }
+        else
+          {
+            (*this)[keys[i]] = values[i];
+          }
       }
     rehasher ();
   }
