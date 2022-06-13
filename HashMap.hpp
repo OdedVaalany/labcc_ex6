@@ -433,8 +433,10 @@ class HashMap {
    private:
     const HashMap<KeyT, ValueT> &_father;
     const std::vector<std::vector<std::pair<KeyT, ValueT>> *> &_place;
-    typename std::vector<std::vector<std::pair<KeyT, ValueT>> *>::size_type _cell;
-    typename std::vector<std::vector<std::pair<KeyT, ValueT>> *>::size_type _obj;
+    typename std::vector<std::vector<std::pair<KeyT, ValueT>> *>::size_type
+        _cell;
+    typename std::vector<std::vector<std::pair<KeyT, ValueT>> *>::size_type
+        _obj;
    public:
     typedef std::ptrdiff_t difference_type;
     typedef std::pair<KeyT, ValueT> value_type;
