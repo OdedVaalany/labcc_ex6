@@ -3,7 +3,7 @@
 //
 #include "HashMap.hpp"
 
-class invalid_key : public std::invalid_argument {
+class InvalidKey : public std::invalid_argument {
   using std::invalid_argument::invalid_argument;
 };
 
@@ -26,7 +26,7 @@ class Dictionary : public HashMap<std::string, std::string> {
   {
     if (!HashMap<std::string, std::string>::erase (key))
       {
-        throw invalid_key ("Key not found");
+        throw InvalidKey ("Key not found");
       }
     return true;
   }

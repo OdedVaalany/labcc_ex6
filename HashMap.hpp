@@ -11,6 +11,7 @@
 #include <iterator>
 
 #define START_CAPACITY 16
+#define LOWEST_CAPACITY 1
 #define LOWER_LOADER_FACTOR 0.25
 #define UPPER_LOADER_FACTOR 0.75
 
@@ -47,11 +48,11 @@ class HashMap {
           }
         clear ();
         delete_array ();
-        _capacity = std::pow (2, (int) std::log2 (_capacity) + 1);
+        _capacity = _capacity * 2;
         allocate_array ();
         load_data (keys, values);
       }
-    if (loader_factor < LOWER_LOADER_FACTOR && _capacity > START_CAPACITY)
+    if (loader_factor < LOWER_LOADER_FACTOR && _capacity > LOWEST_CAPACITY)
       {
         for (auto &item: *this)
           {
@@ -60,7 +61,7 @@ class HashMap {
           }
         clear ();
         delete_array ();
-        _capacity = std::pow (2, (int) std::log2 (_capacity) - 1);
+        _capacity = _capacity/2;
         allocate_array ();
         load_data (keys, values);
       }
