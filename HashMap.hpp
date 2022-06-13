@@ -61,7 +61,7 @@ class HashMap {
           }
         clear ();
         delete_array ();
-        _capacity = _capacity/2;
+        _capacity = _capacity / 2;
         allocate_array ();
         load_data (keys, values);
       }
@@ -155,7 +155,8 @@ class HashMap {
     _array = std::vector<std::vector<std::pair<KeyT, ValueT>> *> (_capacity);
     for (int i = 0; i < _capacity; ++i)
       {
-        _array[i] = new std::vector<std::pair<KeyT, ValueT>> (to_copy._array[i][0]);
+        _array[i] = new std::vector<std::pair<KeyT, ValueT>>
+            (to_copy._array[i][0]);
       }
   }
 
