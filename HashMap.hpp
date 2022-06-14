@@ -268,7 +268,7 @@ class HashMap {
    * @param key to remove
    * @return true if the pair successfully removed \n false either
    * */
-  bool erase (const KeyT key)
+  virtual bool erase (const KeyT key)
   {
     for (auto i = _array[hasher (key)][0].begin ();
          i != _array[hasher (key)][0].end (); ++i)
