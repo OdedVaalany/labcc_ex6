@@ -163,7 +163,7 @@ class HashMap {
   /**
    * HashMap destructor
    * */
-  ~HashMap ()
+  virtual ~HashMap ()
   {
     delete_array ();
   }

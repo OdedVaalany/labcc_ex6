@@ -16,6 +16,11 @@ class Dictionary : public HashMap<std::string, std::string> {
   Dictionary (const Dictionary &dict)
       : HashMap<std::string, std::string> (dict)
   {}
+
+  ~Dictionary()
+  {
+    HashMap<std::string, std::string>::~HashMap();
+  }
   /**
    * The function use the erase function of the father, and throw invalid_key
    * exception if the key isn't in the dictionary
