@@ -70,6 +70,7 @@ class HashMap {
   /**
    * The function free all allocation memory of the array from the HashMap
    * */
+ protected:
   void delete_array ()
   {
     for (int i = 0; i < _capacity; ++i)

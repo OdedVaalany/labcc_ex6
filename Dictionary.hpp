@@ -19,7 +19,7 @@ class Dictionary : public HashMap<std::string, std::string> {
 
   ~Dictionary()
   {
-    HashMap<std::string, std::string>::~HashMap();
+    HashMap<std::string, std::string>::delete_array();
   }
   /**
    * The function use the erase function of the father, and throw invalid_key
